@@ -1,0 +1,20 @@
+{
+  "workbench.colorTheme": "Electron vue darker",
+  "editor.fontLigatures": true,
+  "editor.cursorBlinking": "phase",
+  "editor.cursorWidth": 2,
+  "editor.tabSize": 8,
+  
+  "material-icon-theme.folders.color": "#37c886",
+  "material-icon-theme.folders.theme": "specific",
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontWeightBold": "600",
+  "terminal.integrated.fontWeight": "300",
+  
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+}
