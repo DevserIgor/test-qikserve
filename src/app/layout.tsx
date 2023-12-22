@@ -1,9 +1,16 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import './globals.css';
 import { AppProvider } from '@/providers/appProvider';
+import { Header } from './components/layout';
+import HeroBanner from './components/layout/HeroBanner/HerroBanner';
 
-const inter = Inter({ subsets: ['latin'] });
+const roboto = Roboto({
+  weight: ['400', '500', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap'
+});
 
 export const metadata: Metadata = {
   title: 'Burgers',
@@ -17,8 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <AppProvider>{children}</AppProvider>
+      <body className={roboto.className}>
+        <AppProvider>
+          <Header />
+          <HeroBanner />
+          {children}
+        </AppProvider>
       </body>
     </html>
   );
