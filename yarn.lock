@@ -5034,6 +5034,11 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
+windstitch@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/windstitch/-/windstitch-0.3.0.tgz#ebb97d13098fca51286feee5b3103c681ad8b61d"
+  integrity sha512-xn48NPYKCcj8QHfn2/sQGF/zWRuHfSweRkUnSQnL6Szoyp7L2D6b+XbjlQY8FW8BIzc2Rq3ltx0Z5KpfFLyJkw==
+
 wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
