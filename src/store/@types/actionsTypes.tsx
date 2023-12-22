@@ -1,9 +1,25 @@
+import { Menu, Restaurant, ThemeColors } from '@/@types';
+
 export type ActionProps<TPayload, TError = string> = {
   type: string;
   payload?: TPayload;
   error?: TError;
   isLoading?: boolean;
 };
+type ThemePayload = {
+  key: 'theme';
+  value: ThemeColors;
+};
+type MenuPayload = {
+  key: 'menu';
+  value: Menu;
+};
+type restaurantPayload = {
+  key: 'restaurant';
+  value: Restaurant;
+};
+
+export type SetStateProps = ThemePayload | MenuPayload | restaurantPayload;
 
 export type ActionFetchSuccess<TPayload> = {
   type: 'FETCH_SUCCESS';

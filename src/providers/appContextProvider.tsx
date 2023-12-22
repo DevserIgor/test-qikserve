@@ -1,15 +1,22 @@
 'use client';
 
 import { Restaurant, ThemeColors } from '@/@types';
-import { ActionTypes } from '@/store/@types/actionsTypes';
+import { ActionTypes, SetStateProps } from '@/store/@types/actionsTypes';
 import { useRestaurantSetup } from '@/hooks/restaurant/useRestaurantSetup';
 
 import { defaultThemeColors } from '@/util/theme/defaults';
-import { ReactNode, createContext, useMemo, useReducer } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useMemo,
+  useReducer
+} from 'react';
 import { AppInitialState } from '@/@types/setup/setupTypes';
 import { AppReducer, initialAppState } from '@/store/AppReducer';
 import { AppActions } from '@/store/AppActions';
 import { useGetMenu } from '@/templates/menus/hooks/useGetList/useGetMenu';
+import { isEqual } from 'lodash';
 
 type CombinedProviderProps = {
   children: ReactNode;
@@ -17,84 +24,78 @@ type CombinedProviderProps = {
 
 export type AppContextProps = {
   state: AppInitialState;
-  dispatch: React.Dispatch<ActionTypes<AppInitialState>>;
+  dispatch: React.Dispatch<ActionTypes<SetStateProps>>;
 };
 
 const AppContext = createContext<AppContextProps>({} as AppContextProps);
 
 const AppContextProvider = ({ children }: CombinedProviderProps) => {
-  const {
-    data: restaurant,
-    isLoading: isLoadingRestaurant,
-    isError: isErrorRestaurant
-  } = useRestaurantSetup();
+  const { data: restaurant } = useRestaurantSetup();
+  const { data: menu } = useGetMenu();
 
-  const {
-    data: menu,
-    isLoading: isLoadingMenu,
-    isError: isErrorMenu
-  } = useGetMenu();
   const [state, dispatch] = useReducer(AppReducer, {
     ...initialAppState,
     globalState: {
       ...initialAppState.globalState,
       menu: menu,
       restaurant: restaurant,
-      themeColors: defaultThemeColors
+      theme: defaultThemeColors
     }
   } as AppInitialState);
 
-  const setThemeColors = ({ webSettings }: Restaurant) => {
-    Object.entries(defaultThemeColors).forEach(async ([key, value]) => {
-      const propertyName = value.variableName;
-      const propertyValue = webSettings[key as keyof ThemeColors];
-      console.log({ key, value, propertyName, propertyValue });
+  const setState = useCallback(
+    (data: SetStateProps) => dispatch(AppActions.setState(data)),
+    [dispatch]
+  );
 
-      const transformPropertyName =
-        propertyName == '--banner-image'
-          ? `url('${propertyValue}')`
-          : propertyValue;
+  const updateTheme = useCallback(
+    async (restaurant: Restaurant) => {
+      const { webSettings } = restaurant;
+      if (isEqual(restaurant, state.globalState.restaurant)) return;
+      setState({ key: 'restaurant', value: restaurant });
 
-      document.documentElement.style.setProperty(
-        propertyName,
-        transformPropertyName
-      );
-      dispatch(
-        AppActions.setState({
-          ...state,
-          globalState: {
-            ...state.globalState,
-            theme: {
-              ...state.globalState.theme,
-              [key]: {
-                ...state.globalState.theme[key as keyof ThemeColors],
-                value: transformPropertyName
-              }
-            }
+      const theme = Object.entries(webSettings).reduce((acc, [key, value]) => {
+        if (defaultThemeColors[key as keyof ThemeColors] === undefined)
+          return acc;
+
+        const propertyName =
+          defaultThemeColors[key as keyof ThemeColors].variableName;
+        const propertyValue = value as string;
+
+        const transformPropertyName =
+          propertyName == '--banner-image'
+            ? `url('${propertyValue}')`
+            : propertyValue;
+
+        document.documentElement.style.setProperty(
+          propertyName,
+          transformPropertyName
+        );
+
+        return {
+          ...acc,
+          [key]: {
+            ...acc[key as keyof ThemeColors],
+            value: transformPropertyName
           }
-        })
-      );
-    });
-  };
+        };
+      }, defaultThemeColors);
 
-  const setLoading = (isLoading: boolean) => {
-    dispatch(AppActions.setIsLoading(isLoading));
-  };
-
-  const setError = (isError: boolean) => {
-    dispatch(AppActions.setError(isError));
-  };
+      if (isEqual(theme, state.globalState.theme)) return;
+      setState({ key: 'theme', value: theme });
+    },
+    [setState, state.globalState.restaurant, state.globalState.theme]
+  );
 
   useMemo(() => {
-    setLoading(isLoadingRestaurant);
-    setError(isErrorRestaurant);
-    restaurant && setThemeColors(restaurant);
-  }, [isLoadingRestaurant, isErrorRestaurant, restaurant]);
+    if (restaurant !== undefined) {
+      updateTheme(restaurant);
+    }
 
-  useMemo(() => {
-    setLoading(isLoadingMenu);
-    setError(isErrorMenu);
-  }, [isLoadingMenu, isErrorMenu]);
+    if (menu && !isEqual(menu, state.globalState.menu)) {
+      setState({ key: 'menu', value: menu });
+    }
+  }, [menu, restaurant, setState, state.globalState.menu, updateTheme]);
 
   const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 

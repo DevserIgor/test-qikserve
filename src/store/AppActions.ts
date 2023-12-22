@@ -1,13 +1,11 @@
-import { AppInitialState } from '@/@types/setup/setupTypes';
 import {
   ActionFetchSuccess,
   ActionSetError,
-  ActionSetIsLoading
+  ActionSetIsLoading,
+  SetStateProps
 } from './@types/actionsTypes';
 
-const setState = (
-  data: AppInitialState
-): ActionFetchSuccess<AppInitialState> => {
+const setState = (data: SetStateProps): ActionFetchSuccess<SetStateProps> => {
   return {
     type: 'FETCH_SUCCESS',
     payload: data

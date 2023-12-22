@@ -1,6 +1,6 @@
 import { Menu, Restaurant, ThemeColors } from '@/@types';
 import { AppInitialState } from '@/@types/setup/setupTypes';
-import { ActionTypes } from '@/store/@types/actionsTypes';
+import { ActionTypes, SetStateProps } from '@/store/@types/actionsTypes';
 
 export const initialAppState: AppInitialState = {
   loading: false,
@@ -14,7 +14,7 @@ export const initialAppState: AppInitialState = {
 
 export const AppReducer = (
   state: AppInitialState = initialAppState,
-  action: ActionTypes<AppInitialState>
+  action: ActionTypes<SetStateProps>
 ): AppInitialState => {
   switch (action.type) {
     case 'SET_REQUESTING':
@@ -28,7 +28,7 @@ export const AppReducer = (
         loading: false,
         globalState: {
           ...state.globalState,
-          ...action.payload
+          [action.payload.key]: action.payload.value
         },
         error: ''
       };

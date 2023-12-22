@@ -3,11 +3,11 @@ import { ThemeColors } from '@/@types';
 export const defaultThemeColors: ThemeColors = {
   bannerImage: {
     variableName: '--banner-image',
-    value: `url('https://via.placeholder.com/1480x150')`
+    value: `https://via.placeholder.com/1480x150`
   },
   backgroundColour: {
     variableName: '--background-color',
-    value: '#fff'
+    value: '#ffffff'
   },
   primaryColour: {
     variableName: '--primary-color',
@@ -19,6 +19,6 @@ export const defaultThemeColors: ThemeColors = {
   },
   navBackgroundColour: {
     variableName: '--nav-background-color',
-    value: '#f8f9fa'
+    value: '#007bff'
   }
 };
