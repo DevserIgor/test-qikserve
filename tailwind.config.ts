@@ -18,6 +18,9 @@ const config: Config = {
       },
       colors: {
         'my-color-red': '#FF0000'
+      },
+      maxHeight: {
+        'max-content': 'max-content'
       }
     }
   },
