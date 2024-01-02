@@ -1,18 +1,4 @@
-export type MenuState = {
-  loading: boolean;
-  error: string;
-  menu: Menu;
-};
-
-export type Menu = {
-  id: number;
-  name: string;
-  type: string;
-  collapse: number;
-  sections: Section[];
-};
-
-type Section = {
+export type Section = {
   id: number;
   name: string;
   description: string | null;
@@ -27,7 +13,7 @@ type Image = {
   image: string;
 };
 
-type MenuItem = {
+export type MenuItem = {
   id: number;
   name: string;
   description: string;
@@ -60,4 +46,28 @@ type ModifierItem = {
   availabilityType: string;
   qty?: number;
   available: boolean;
+};
+
+export type MenuState = {
+  loading: boolean;
+  error: string;
+  menu: Menu;
+};
+
+export type Menu = {
+  id: number;
+  name: string;
+  type: string;
+  collapse: number;
+  sections: Section[];
+};
+
+export type CarouselItemProps = Pick<Section, 'id' | 'name' | 'images'> & {
+  selected: boolean;
+  onSelected: () => void;
+};
+
+export type SectionSelectedProps = {
+  items: CarouselItemProps[]; // Use o tipo correto para os itens
+  onItemSelected: (itemId: number) => void; // Adicione um parâmetro para identificar o item selecionado
 };

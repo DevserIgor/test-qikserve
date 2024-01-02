@@ -2,7 +2,6 @@ import { w, W } from 'windstitch';
 
 export const WrapperHeader = w.header(
   `
-  container mx-auto
   bg-[var(--nav-background-color)] 
   flex items-center justify-center px-3
   w-full bg-gron h-[64px] z-20 relative

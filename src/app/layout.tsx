@@ -4,9 +4,10 @@ import './globals.css';
 import { AppProvider } from '@/providers/appProvider';
 import { Header } from './components/layout';
 import HeroBanner from './components/layout/HeroBanner/HerroBanner';
+import Search from '@/templates/menus/components/search/Search';
 
 const roboto = Roboto({
-  weight: ['400', '500', '700'],
+  weight: ['300', '400', '500', '700'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap'
@@ -28,6 +29,7 @@ export default function RootLayout({
         <AppProvider>
           <Header />
           <HeroBanner />
+          <Search />
           {children}
         </AppProvider>
       </body>
